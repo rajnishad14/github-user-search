@@ -1,10 +1,42 @@
-import React from 'react';
-import styled from 'styled-components';
-import { MdSearch } from 'react-icons/md';
-import { GithubContext } from '../context/context';
+import React, { useContext, useState } from 'react'
+import styled from 'styled-components'
+import { MdSearch } from 'react-icons/md'
+import { GithubContext } from '../context/context'
 const Search = () => {
-  return <h2>search component</h2>;
-};
+  const [searchUser, setSearchUser] = useState('')
+  const { requests, error, searchGithubUser } = useContext(GithubContext)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (searchUser) {
+      searchGithubUser(searchUser)
+    }
+  }
+  return (
+    <section className="section">
+      <Wrapper className="section-center">
+        {error.show && (
+          <ErrorWrapper>
+            <p>{error.msg}</p>
+          </ErrorWrapper>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div className="form-control">
+            <MdSearch />
+            <input
+              type="text"
+              name="serachUser"
+              placeholder="Enter Github UserName"
+              value={searchUser}
+              onChange={(e) => setSearchUser(e.target.value)}
+            />
+            <button type="submit">Search</button>
+          </div>
+        </form>
+        <h3>requests: {requests}/60</h3>
+      </Wrapper>
+    </section>
+  )
+}
 
 const Wrapper = styled.div`
   position: relative;
@@ -74,7 +106,7 @@ const Wrapper = styled.div`
     color: var(--clr-grey-5);
     font-weight: 400;
   }
-`;
+`
 const ErrorWrapper = styled.article`
   position: absolute;
   width: 90vw;
@@ -86,5 +118,5 @@ const ErrorWrapper = styled.article`
     color: red;
     letter-spacing: var(--spacing);
   }
-`;
-export default Search;
+`
+export default Search
