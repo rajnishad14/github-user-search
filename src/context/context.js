@@ -34,9 +34,9 @@ const GithubProvider = ({ children }) => {
         axios(`${followers_url}?per_page=100`),
       ])
         .then((result) => {
-          //const [repos, followers] = result
-          setRepos(response.value.data)
-          setFollowers(response.value.data)
+          const [repos, followers] = result
+          setRepos(repos.value.data)
+          setFollowers(followers.value.data)
         })
         .catch((err) => console.log(err))
     } else {
